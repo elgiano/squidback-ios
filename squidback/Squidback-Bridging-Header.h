@@ -12,9 +12,20 @@
 - (int)     getNumVisualBands;
 
 - (void)    getFilterDb:(float *)freqs;
+- (void)    getCorrectionDb:(float *)freqs;
+
 - (int)     getNumFilterBands;
 - (void)    getFilterFrequencies:(float *)freqs;
+- (float)    getPeakness;
+- (float)    getPeak;
+- (float)    getAverage;
+- (float)    getLimiterCorrection;
+- (void)    printTrackings;
 
+- (float)    getMasterGain;
+
+    
+    
 -(float)    setMaxGain:(float) perc;
 -(void)     setPlasticity:(float) perc;
 -(void)     setInertia:(float) perc;

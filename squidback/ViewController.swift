@@ -145,10 +145,14 @@ class ViewController: UIViewController {
     var spectrumMags:UnsafeMutablePointer<Float>!
     var filterFrequencies:UnsafeMutablePointer<Float>!
     var filterMags:UnsafeMutablePointer<Float>!
+    var correctionMags:UnsafeMutablePointer<Float>!
+
     var numFilterBands:Int=0
     var spectrumDataSet = LineChartDataSet(values:[],label:"spectrum data")
     var filterDataSet = LineChartDataSet(values:[],label:"filter data")
-    
+    var gainDataSet = LineChartDataSet(values:[],label:"gain data")
+    var correctionDataSet = LineChartDataSet(values:[],label:"correction data")
+
     var settings = Preset() // load default settings
     var realMaxGain:Float = 30
     var started:Bool=false
@@ -176,8 +180,17 @@ class ViewController: UIViewController {
         
         // send away the menu
         menuConstraint.constant = -10000
+        
+        UIApplication.shared.isIdleTimerDisabled = true
+        
+        Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(printController), userInfo: nil, repeats: true)
+
 
         
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        UIApplication.shared.isIdleTimerDisabled = false
     }
     
     func setupGraphs(){
@@ -185,7 +198,9 @@ class ViewController: UIViewController {
         lineChart?.leftAxis.enabled = false
         lineChart?.rightAxis.enabled = false
         lineChart?.legend.enabled = false
+        lineChart?.xAxis.drawGridLinesEnabled = false
         lineChart?.leftAxis.drawLabelsEnabled = false
+        lineChart?.xAxis.drawLabelsEnabled = false
 
 
         lineChart?.isUserInteractionEnabled = false
@@ -194,18 +209,19 @@ class ViewController: UIViewController {
         filterChart?.xAxis.enabled = false
         filterChart?.leftAxis.enabled = false
         filterChart?.rightAxis.enabled = false
-        filterChart?.gridBackgroundColor = .green
         filterChart?.legend.enabled = false
+        filterChart?.xAxis.drawGridLinesEnabled = false
         filterChart?.leftAxis.drawLabelsEnabled = false
+        lineChart?.xAxis.drawLabelsEnabled = false
 
-
+        filterChart?.backgroundColor = .black
         
         spectrumDataSet.mode = .cubicBezier
         spectrumDataSet.drawCirclesEnabled = false
         spectrumDataSet.lineWidth = 0.4
         spectrumDataSet.setColor(UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1))
         spectrumDataSet.fillColor = .white
-        spectrumDataSet.fillAlpha = 0.75
+        spectrumDataSet.fillAlpha = 0.9
         spectrumDataSet.drawFilledEnabled = true
         spectrumDataSet.drawHorizontalHighlightIndicatorEnabled = false
         spectrumDataSet.fillFormatter = CubicLineSampleFillFormatter()
@@ -213,13 +229,33 @@ class ViewController: UIViewController {
         //filterDataSet.mode = .cubicBezier
         filterDataSet.drawCirclesEnabled = false
         filterDataSet.lineWidth = 0
-        filterDataSet.setColor(UIColor(red: 0, green: 0, blue: 0, alpha: 1))
-        filterDataSet.fillColor = .red
-        filterDataSet.fillAlpha = 0.75
+        filterDataSet.setColor(UIColor(red: 1, green: 0, blue: 0, alpha: 1))
+        filterDataSet.fillColor = .black // this will be changed at runtime
+        filterDataSet.fillAlpha = 0.1
         filterDataSet.drawFilledEnabled = true
         filterDataSet.drawHorizontalHighlightIndicatorEnabled = false
         filterDataSet.fillFormatter = CubicLineSampleFillFormatter()
         filterDataSet.drawValuesEnabled = false
+        
+        correctionDataSet.drawCirclesEnabled = false
+        correctionDataSet.lineWidth = 0
+        correctionDataSet.setColor(UIColor(red: 0.25, green: 0.25, blue: 0.25, alpha: 1))
+        //this will be the color of the reactive filter
+        correctionDataSet.fillColor = UIColor(red: 0.15, green: 0.15, blue: 0.15, alpha: 1)
+        correctionDataSet.fillAlpha = 0.75
+        correctionDataSet.drawFilledEnabled = true
+        correctionDataSet.drawHorizontalHighlightIndicatorEnabled = false
+        correctionDataSet.fillFormatter = CubicLineSampleFillFormatter()
+        correctionDataSet.drawValuesEnabled = false
+        
+        gainDataSet.drawCirclesEnabled = false
+        gainDataSet.lineWidth = 0
+        gainDataSet.fillColor = .black // this will be changed at runtime
+        gainDataSet.fillAlpha = 1
+        gainDataSet.drawFilledEnabled = true
+        gainDataSet.drawHorizontalHighlightIndicatorEnabled = false
+        gainDataSet.fillFormatter = CubicLineSampleFillFormatter()
+        gainDataSet.drawValuesEnabled = false
         
 
     }
@@ -243,22 +279,38 @@ class ViewController: UIViewController {
         }
         superpowered.getFilterDb(filterMags);
         
+        var correctionData = [ChartDataEntry]()
+        superpowered.getCorrectionDb(correctionMags);
+        
+        var gainData = [ChartDataEntry]()
+        let masterGain = superpowered.getMasterGain();
+        
         for i in 0..<Int(numFilterBands){
             var x = log2(Double(filterFrequencies[i]))
-            var y = scaleFilterDb(val: (filterMags[i]+realMaxGain+80)/(realMaxGain*2+80))//Double(filterMags[i]+80)
-            if(y.isNaN){
-                y = 0
-            }
-            if(x.isNaN){
-                x = 0
-            }
+            var y = scaleFilterDb(val: (filterMags[i]+0+80)/(0*2+80))//Double(filterMags[i]+80)
+            if(y.isNaN){y = 0}
+            if(x.isNaN){x = 0}
             filterData.append(ChartDataEntry(x:x,y:y))
+            
+            y = y*Double(masterGain/realMaxGain) 
+            if(y.isNaN){y = 0}
+            gainData.append(ChartDataEntry(x:x,y:y))
+            
+            y = scaleFilterDb(val: (correctionMags[i]+0+80)/(0*2+80))//Double(filterMags[i]+80)
+            if(y.isNaN){y = 0}
+            correctionData.append(ChartDataEntry(x:x,y:y))
+            
+            
             
         }
         
         filterDataSet.values = filterData
-        filterChart?.data = LineChartData(dataSets: [filterDataSet])
+        correctionDataSet.values = correctionData
+        gainDataSet.values = gainData
 
+        
+        filterChart?.data = LineChartData(dataSets: [correctionDataSet,gainDataSet,filterDataSet])
+        
         
         // spectrum
         var spectrumData = [ChartDataEntry]()
@@ -293,11 +345,16 @@ class ViewController: UIViewController {
 
         
         // colorize
-        filterDataSet.fillColor = pitchToHsv(pitch: spectrumFrequencies[peakIndex], amp: spectrumMags[peakIndex])
+        let color = pitchToHsv(pitch: spectrumFrequencies[peakIndex], amp: spectrumMags[peakIndex])
+        filterDataSet.fillColor = color
+        gainDataSet.fillColor = color
         
         //This must stay at end of function
         lineChart?.notifyDataSetChanged()
         filterChart?.notifyDataSetChanged()
+        
+        //print(superpowered.getPeak(),"\t",superpowered.getAverage(),"\t",superpowered.getPeakness(),"\t",superpowered.getLimiterCorrection())
+        
 
         
         
@@ -311,6 +368,7 @@ class ViewController: UIViewController {
         spectrumMags = UnsafeMutablePointer<Float>.allocate(capacity: (numVisualBands))
         filterFrequencies = UnsafeMutablePointer<Float>.allocate(capacity: (numFilterBands))
         filterMags = UnsafeMutablePointer<Float>.allocate(capacity: (numFilterBands))
+        correctionMags = UnsafeMutablePointer<Float>.allocate(capacity: (numFilterBands))
 
         
         for i in 0..<Int(numVisualBands){
@@ -320,6 +378,7 @@ class ViewController: UIViewController {
         for i in 0..<Int(numFilterBands){
             (filterFrequencies+i).initialize(to: 0.0)
             (filterMags+i).initialize(to: 0.0)
+            (correctionMags+i).initialize(to: 0.0)
 
         }
         
@@ -350,16 +409,16 @@ class ViewController: UIViewController {
         // cpsmidi: 12*log2(fm/440 Hz) + 69
         let midi = (12 * log2(pitch/440)) + 69;
         let hue = midi.truncatingRemainder(dividingBy: 12)/12;
-        var saturation = 1.5-(midi/120);
-        let brightness = fabs(log(fabs(amp)/0.005) / log(1/0.005));
+        var saturation = 1.25-(midi/120);
+        var brightness = fabs(log(fabs(amp/200)/0.005) / log(1/0.005));
         
         if(saturation<0){saturation = 0}else if(saturation>1){saturation = 1}
-        //if(brightness<0){brightness = 0}else if(brightness>1){brightness = 1}
-
+        if(brightness<0){brightness = 0}else if(brightness>1){brightness = 1}
+                
         return UIColor.init(
             hue:fabs(CGFloat(hue)).truncatingRemainder(dividingBy: 1),
             saturation:CGFloat(saturation),
-            brightness:fabs(CGFloat(brightness)).truncatingRemainder(dividingBy: 1),
+            brightness:CGFloat(brightness),
             alpha:1)
     }
 
@@ -367,6 +426,13 @@ class ViewController: UIViewController {
 
         if(started){
             lineChartUpdate();
+        }
+        
+    }
+    @objc func printController() {
+        
+        if(started){
+            superpowered.printTrackings();
         }
         
     }
@@ -378,12 +444,14 @@ class ViewController: UIViewController {
         if(started){
             superpowered.initAudio();
             rescaleGraphs();
-            sendAllControls()
-            
+            sendAllControls();
+            UIApplication.shared.isIdleTimerDisabled = true
 
         }else{
             superpowered.stopAudio();
             resetGraphs()
+            UIApplication.shared.isIdleTimerDisabled = false
+
             
         }
         

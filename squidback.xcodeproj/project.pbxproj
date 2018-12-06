@@ -25,6 +25,7 @@
 		ACC140F32183580E00E71DD3 /* SuperpoweredIOSAudioIO.mm in Sources */ = {isa = PBXBuildFile; fileRef = ACC140ED2183580E00E71DD3 /* SuperpoweredIOSAudioIO.mm */; };
 		ACC140F7218358D000E71DD3 /* libSuperpoweredAudioIOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ACC140F6218358CF00E71DD3 /* libSuperpoweredAudioIOS.a */; };
 		ACF4F5A3217CD68F00AC6F9F /* Preset.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACF4F5A2217CD68F00AC6F9F /* Preset.swift */; };
+		DEECAE5721AEFBB8001CDFD9 /* ReactiveFilterController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEECAE5521AEFBB8001CDFD9 /* ReactiveFilterController.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,6 +96,8 @@
 		ACC140F12183580E00E71DD3 /* SuperpoweredSimple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SuperpoweredSimple.h; path = Superpowered/SuperpoweredSimple.h; sourceTree = SOURCE_ROOT; };
 		ACC140F6218358CF00E71DD3 /* libSuperpoweredAudioIOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSuperpoweredAudioIOS.a; path = Superpowered/libSuperpoweredAudioIOS.a; sourceTree = "<group>"; };
 		ACF4F5A2217CD68F00AC6F9F /* Preset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preset.swift; sourceTree = "<group>"; };
+		DEECAE5521AEFBB8001CDFD9 /* ReactiveFilterController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ReactiveFilterController.cpp; sourceTree = "<group>"; };
+		DEECAE5621AEFBB8001CDFD9 /* ReactiveFilterController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReactiveFilterController.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +151,8 @@
 				1B1688E11A7BAFF800CB7477 /* ViewController.swift */,
 				ACF4F5A2217CD68F00AC6F9F /* Preset.swift */,
 				1B1689031A7BB0F200CB7477 /* Superpowered.mm */,
+				DEECAE5521AEFBB8001CDFD9 /* ReactiveFilterController.cpp */,
+				DEECAE5621AEFBB8001CDFD9 /* ReactiveFilterController.h */,
 				1B1688DD1A7BAFF800CB7477 /* Supporting Files */,
 				1B1688DF1A7BAFF800CB7477 /* AppDelegate.swift */,
 				1B1688E31A7BAFF800CB7477 /* Main.storyboard */,
@@ -310,6 +315,7 @@
 				1B1689041A7BB0F200CB7477 /* Superpowered.mm in Sources */,
 				1B1688E01A7BAFF800CB7477 /* AppDelegate.swift in Sources */,
 				AC97D1B62173BB33008C5D04 /* ReactiveFilter.cpp in Sources */,
+				DEECAE5721AEFBB8001CDFD9 /* ReactiveFilterController.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

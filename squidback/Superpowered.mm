@@ -2,20 +2,20 @@
 #import "SuperpoweredIOSAudioIO.h"
 #include "SuperpoweredBandpassFilterbank.h"
 #include "SuperpoweredSimple.h"
-#include "SuperpoweredLimiter.h"
 
 #include "SpectrumVisualizer.cpp"
 #include "ReactiveFilter.h"
+#include "ReactiveFilterController.h"
 
 
 
 @implementation Superpowered {
     SuperpoweredIOSAudioIO *audioIO;
     ReactiveFilter *reactiveFilter;
-    SuperpoweredLimiter *limiter;
     
     unsigned int samplerate;
 }
+
 
 static bool audioProcessing(void *clientdata, float **buffers, unsigned int inputChannels, unsigned int outputChannels, unsigned int numberOfSamples, unsigned int samplerate, uint64_t hostTime) {
     __unsafe_unretained Superpowered *self = (__bridge Superpowered *)clientdata;
@@ -23,19 +23,19 @@ static bool audioProcessing(void *clientdata, float **buffers, unsigned int inpu
         self->samplerate = samplerate;
         visualFilterbank->setSamplerate(samplerate);
         self->reactiveFilter->setSamplerate(samplerate);
-        self->limiter->setSamplerate(samplerate);
     };
 
     // Mix the non-interleaved input to interleaved.
     float interleaved[numberOfSamples * 2 + 16];
 
     SuperpoweredInterleave(buffers[0], buffers[1], interleaved, numberOfSamples);
+    
     processVisualizer(interleaved, numberOfSamples);
+
     
     self->reactiveFilter->process(interleaved, interleaved, numberOfSamples);
     
-    // limit and out
-    self->limiter->process(interleaved, interleaved, numberOfSamples);
+   
 
     SuperpoweredDeInterleave(interleaved, buffers[0], buffers[1], numberOfSamples);
     
@@ -59,10 +59,7 @@ static bool audioProcessing(void *clientdata, float **buffers, unsigned int inpu
     reactiveFilter = new ReactiveFilter((unsigned) samplerate);
     reactiveFilter->setFilterBands(12); // TODO: remove
     reactiveFilter->enable(true);
-    
-    // initialize limiter
-    limiter = new SuperpoweredLimiter((unsigned int)samplerate);
-    limiter->enable(true);
+
     
     [audioIO start];
 }
@@ -72,7 +69,6 @@ static bool audioProcessing(void *clientdata, float **buffers, unsigned int inpu
 
     destroyVisualizer();
     delete reactiveFilter;
-    delete limiter;
 }
 
 - (void)dealloc {
@@ -102,14 +98,29 @@ static bool audioProcessing(void *clientdata, float **buffers, unsigned int inpu
 }
 
 - (void)getFilterDb:(float *)freqs {
-    memcpy(freqs,reactiveFilter->getFilterDbs(true),reactiveFilter->getNumBands()*sizeof(float));
+    memcpy(freqs,reactiveFilter->getFilterDbs(false),reactiveFilter->getNumBands()*sizeof(float));
 }
+- (void)getCorrectionDb:(float *)freqs{
+    int numBands = reactiveFilter->getNumBands();
+    std::vector<float> correction = reactiveFilter->controller->getPersistentPeakCorrectionNoGain();
+    for(int i=0;i<numBands && i<correction.size();i++){
+        freqs[i] = correction[i];
+    };
+}
+
 - (int)getNumFilterBands {
     return reactiveFilter->getNumBands();
 }
 - (void)getFilterFrequencies:(float *)freqs {
     
     memcpy(freqs,reactiveFilter->getBands(),reactiveFilter->getNumBands()*sizeof(float));
+}
+-(float) getMasterGain{
+    if(reactiveFilter) {
+        return reactiveFilter->masterGain;
+    }else{
+        return 0;
+    }
 }
 -(float) setMaxGain:(float) perc{
     if(reactiveFilter) {
@@ -145,4 +156,26 @@ static bool audioProcessing(void *clientdata, float **buffers, unsigned int inpu
     if(reactiveFilter) reactiveFilter->memsetGlitch = sw;
 
 }
+
+-(float) getPeakness{
+    if(reactiveFilter) return reactiveFilter->peakness;
+    return 0;
+}
+-(float) getPeak{
+    if(reactiveFilter) return reactiveFilter->peak;
+    return 0;
+}
+-(float) getAverage{
+    if(reactiveFilter) return reactiveFilter->average;
+    return 0;
+}
+-(float) getLimiterCorrection{
+    if(reactiveFilter) return reactiveFilter->limiterCorrection;
+    return 0;
+}
+    
+-(void) printTrackings{
+    if(reactiveFilter) reactiveFilter->controller->printAll();
+}
+
 @end

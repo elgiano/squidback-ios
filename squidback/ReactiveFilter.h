@@ -13,11 +13,15 @@
 #include "scales.h"
 #include <cstdlib>
 #include <pthread.h>
+#include <vector>
 #include <string.h>
 #include <math.h>
 #include <algorithm>
+#include <chrono>
 #include "SuperpoweredSimple.h"
+#include "SuperpoweredLimiter.h"
 
+class ReactiveFilterController;
 
 struct reactiveFilterInternals;
 
@@ -26,6 +30,10 @@ class ReactiveFilter : public SuperpoweredFX {
 
 public:
     int currentPeakIndex;
+    float peakness = 0,average,peak,limiterCorrection;
+    std::chrono::system_clock::time_point lastUpdate;
+    ReactiveFilterController *controller;
+    
 
     // PARAMETERS
     bool memsetGlitch=false;
@@ -34,7 +42,7 @@ public:
     float plasticity;
     float lopass;
     float masterGain;
-    float peakThreshold;
+    float peakThreshold;    
 
 
     /**
@@ -43,6 +51,9 @@ public:
      @param div The octave division: can be 1,2,3,4,6,12,24,48 (equal-temperament) or 7,13,21,43 (just-intonation).
     */
     void setFilterBands(int div);
+    
+    void incrementBand(int i, float val);
+    float getBand(int i);
 
 /**
  @brief Turns the effect on/off.
@@ -88,6 +99,11 @@ public:
         private:
     reactiveFilterInternals *internals;
     reactiveFilterInternals *nextInternals;
+    
+    SuperpoweredLimiter *limiter;
+    
+    std::vector<float> lastPeakCorrections;
+
 
 
     /*static SuperpoweredNBandEQ *correctionFilter;*/
