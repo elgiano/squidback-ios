@@ -100,11 +100,11 @@ class GraphView: UIView {
         spectrumPath = UIBezierPath()
         drawSpectrum(path: spectrumPath!, xPoints: spectrumXPoints, values: spectrumValues, color: spectrumColor, invert: false)
         
-        peakPath = UIBezierPath()
+        /*peakPath = UIBezierPath()
         drawLine(path:peakPath!,y:peakY,color:peakColor)
         
         avgPath = UIBezierPath()
-        drawLine(path:avgPath!,y:avgY,color:avgColor)
+        drawLine(path:avgPath!,y:avgY,color:avgColor)*/
         
     }
     
