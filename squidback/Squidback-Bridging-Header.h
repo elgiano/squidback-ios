@@ -6,6 +6,9 @@
 
 - (void)    initAudio;
 - (void)    stopAudio;
+- (bool)    isPlaying;
+- (float)   getFade;
+
 
 - (void)    getSpectrum:(float *)freqs;
 - (void)    getSpectrumFrequencies:(float *)freqs;
@@ -32,6 +35,8 @@
 -(void)     setPeakThr:(float) perc;
 -(void)     setFilterBw:(int) perc;
 -(void)     setLopass: (float) perc;
+-(void)     setHipass: (float) perc;
+
 -(void)     setMemsetGlitch: (bool) sw;
 
 @end

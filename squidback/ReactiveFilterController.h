@@ -45,6 +45,12 @@ class ReactiveFilterController{
     
     std::vector<float> getPersistentPeakCorrection();
     std::vector<float> getPersistentPeakCorrectionNoGain();
+    float *getPersistentPeakCorrectionNoGainPointer();
+    
+    int targetNumBands=0;
+    float *targetCorrection;
+    
+    float mapToCurve(float val,float min,float max,float curve);
 
     
 };

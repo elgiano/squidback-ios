@@ -41,8 +41,11 @@ public:
     float inertia;
     float plasticity;
     float lopass;
+    float hipass;
     float masterGain;
-    float peakThreshold;    
+    float peakThreshold;
+    
+    float filterVariation;
 
 
     /**
@@ -54,6 +57,8 @@ public:
     
     void incrementBand(int i, float val);
     float getBand(int i);
+    
+    float getTotalCorrection(bool removePersistent);
 
 /**
  @brief Turns the effect on/off.
@@ -94,6 +99,10 @@ public:
     float *getBands();
     float *getFilterDbs(bool applyMasterGain);
     void adjustLopass(float newLopass, bool clear);
+    void adjustHipass(float newLopass, bool clear);
+    
+    float *getAnalMagnitudes();
+
 
 
         private:

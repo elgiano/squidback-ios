@@ -19,38 +19,13 @@
 		AC97D1B32173BB08008C5D04 /* SpectrumVisualizer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC97D1B22173BB08008C5D04 /* SpectrumVisualizer.cpp */; };
 		AC97D1B62173BB33008C5D04 /* ReactiveFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC97D1B52173BB33008C5D04 /* ReactiveFilter.cpp */; };
 		ACC0301D21836AAE0099657E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1B1688E61A7BAFF800CB7477 /* Images.xcassets */; };
-		ACC140DE2183554100E71DD3 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACC140D9218354CD00E71DD3 /* Charts.framework */; };
-		ACC140DF2183554100E71DD3 /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ACC140D9218354CD00E71DD3 /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		ACC140F22183580E00E71DD3 /* SuperpoweredNBandEQ.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ACC140EC2183580E00E71DD3 /* SuperpoweredNBandEQ.cpp */; };
 		ACC140F32183580E00E71DD3 /* SuperpoweredIOSAudioIO.mm in Sources */ = {isa = PBXBuildFile; fileRef = ACC140ED2183580E00E71DD3 /* SuperpoweredIOSAudioIO.mm */; };
 		ACC140F7218358D000E71DD3 /* libSuperpoweredAudioIOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ACC140F6218358CF00E71DD3 /* libSuperpoweredAudioIOS.a */; };
 		ACF4F5A3217CD68F00AC6F9F /* Preset.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACF4F5A2217CD68F00AC6F9F /* Preset.swift */; };
+		DE99938521E54FCD00415F04 /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE99938421E54FCD00415F04 /* GraphView.swift */; };
 		DEECAE5721AEFBB8001CDFD9 /* ReactiveFilterController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEECAE5521AEFBB8001CDFD9 /* ReactiveFilterController.cpp */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		ACC140D8218354CD00E71DD3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = ACC140D3218354CD00E71DD3 /* Charts.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 65AD9E95D9ED4DC0BD73A743;
-			remoteInfo = Charts;
-		};
-		ACC140DA218354CD00E71DD3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = ACC140D3218354CD00E71DD3 /* Charts.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 1CBBC58C6CE1EBEE9852CE41;
-			remoteInfo = ChartsTests;
-		};
-		ACC140E02183554100E71DD3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = ACC140D3218354CD00E71DD3 /* Charts.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = A58A4ED274A941CA248EA921;
-			remoteInfo = Charts;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		ACCD34EA217397C000CF5789 /* Embed Frameworks */ = {
@@ -59,7 +34,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				ACC140DF2183554100E71DD3 /* Charts.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -84,7 +58,6 @@
 		AC97D1B42173BB1B008C5D04 /* ReactiveFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactiveFilter.h; sourceTree = "<group>"; };
 		AC97D1B52173BB33008C5D04 /* ReactiveFilter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReactiveFilter.cpp; sourceTree = "<group>"; };
 		AC97D1B72173BB71008C5D04 /* scales.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scales.h; sourceTree = "<group>"; };
-		ACC140D3218354CD00E71DD3 /* Charts.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Charts.xcodeproj; path = "Charts-master/Charts.xcodeproj"; sourceTree = "<group>"; };
 		ACC140E92183580E00E71DD3 /* SuperpoweredIOSAudioIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SuperpoweredIOSAudioIO.h; path = Superpowered/SuperpoweredIOSAudioIO.h; sourceTree = SOURCE_ROOT; };
 		ACC140EA2183580E00E71DD3 /* SuperpoweredFX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SuperpoweredFX.h; path = Superpowered/SuperpoweredFX.h; sourceTree = SOURCE_ROOT; };
 		ACC140EB2183580E00E71DD3 /* SuperpoweredLimiter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SuperpoweredLimiter.h; path = Superpowered/SuperpoweredLimiter.h; sourceTree = SOURCE_ROOT; };
@@ -96,6 +69,7 @@
 		ACC140F12183580E00E71DD3 /* SuperpoweredSimple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SuperpoweredSimple.h; path = Superpowered/SuperpoweredSimple.h; sourceTree = SOURCE_ROOT; };
 		ACC140F6218358CF00E71DD3 /* libSuperpoweredAudioIOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSuperpoweredAudioIOS.a; path = Superpowered/libSuperpoweredAudioIOS.a; sourceTree = "<group>"; };
 		ACF4F5A2217CD68F00AC6F9F /* Preset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preset.swift; sourceTree = "<group>"; };
+		DE99938421E54FCD00415F04 /* GraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
 		DEECAE5521AEFBB8001CDFD9 /* ReactiveFilterController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ReactiveFilterController.cpp; sourceTree = "<group>"; };
 		DEECAE5621AEFBB8001CDFD9 /* ReactiveFilterController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReactiveFilterController.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -109,7 +83,6 @@
 				1B98E0001B14BD9600617EF9 /* CoreMedia.framework in Frameworks */,
 				1B16890A1A7BB18D00CB7477 /* MediaPlayer.framework in Frameworks */,
 				1B1689081A7BB18200CB7477 /* AVFoundation.framework in Frameworks */,
-				ACC140DE2183554100E71DD3 /* Charts.framework in Frameworks */,
 				1B1689061A7BB17A00CB7477 /* AudioToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -126,7 +99,6 @@
 				1B1689051A7BB17A00CB7477 /* AudioToolbox.framework */,
 				1B1688DC1A7BAFF800CB7477 /* squidback */,
 				1B1688DB1A7BAFF800CB7477 /* Products */,
-				ACC140D3218354CD00E71DD3 /* Charts.xcodeproj */,
 				ACC140F5218358CF00E71DD3 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -152,6 +124,7 @@
 				ACF4F5A2217CD68F00AC6F9F /* Preset.swift */,
 				1B1689031A7BB0F200CB7477 /* Superpowered.mm */,
 				DEECAE5521AEFBB8001CDFD9 /* ReactiveFilterController.cpp */,
+				DE99938421E54FCD00415F04 /* GraphView.swift */,
 				DEECAE5621AEFBB8001CDFD9 /* ReactiveFilterController.h */,
 				1B1688DD1A7BAFF800CB7477 /* Supporting Files */,
 				1B1688DF1A7BAFF800CB7477 /* AppDelegate.swift */,
@@ -186,15 +159,6 @@
 			name = Superpowered;
 			sourceTree = "<group>";
 		};
-		ACC140D4218354CD00E71DD3 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				ACC140D9218354CD00E71DD3 /* Charts.framework */,
-				ACC140DB218354CD00E71DD3 /* ChartsTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		ACC140F5218358CF00E71DD3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -218,7 +182,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				ACC140E12183554100E71DD3 /* PBXTargetDependency */,
 			);
 			name = squidback;
 			productName = SuperpoweredFrequencies;
@@ -238,7 +201,7 @@
 				TargetAttributes = {
 					1B1688D91A7BAFF800CB7477 = {
 						CreatedOnToolsVersion = 6.1.1;
-						DevelopmentTeam = 334AAQL623;
+						DevelopmentTeam = B9Q86FXNP2;
 						LastSwiftMigration = 0900;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -259,35 +222,12 @@
 			mainGroup = 1B1688D11A7BAFF800CB7477;
 			productRefGroup = 1B1688DB1A7BAFF800CB7477 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = ACC140D4218354CD00E71DD3 /* Products */;
-					ProjectRef = ACC140D3218354CD00E71DD3 /* Charts.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				1B1688D91A7BAFF800CB7477 /* squidback */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		ACC140D9218354CD00E71DD3 /* Charts.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Charts.framework;
-			remoteRef = ACC140D8218354CD00E71DD3 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		ACC140DB218354CD00E71DD3 /* ChartsTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = ChartsTests.xctest;
-			remoteRef = ACC140DA218354CD00E71DD3 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		1B1688D81A7BAFF800CB7477 /* Resources */ = {
@@ -312,6 +252,7 @@
 				1B1688E21A7BAFF800CB7477 /* ViewController.swift in Sources */,
 				ACC140F32183580E00E71DD3 /* SuperpoweredIOSAudioIO.mm in Sources */,
 				ACC140F22183580E00E71DD3 /* SuperpoweredNBandEQ.cpp in Sources */,
+				DE99938521E54FCD00415F04 /* GraphView.swift in Sources */,
 				1B1689041A7BB0F200CB7477 /* Superpowered.mm in Sources */,
 				1B1688E01A7BAFF800CB7477 /* AppDelegate.swift in Sources */,
 				AC97D1B62173BB33008C5D04 /* ReactiveFilter.cpp in Sources */,
@@ -320,14 +261,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		ACC140E12183554100E71DD3 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Charts;
-			targetProxy = ACC140E02183554100E71DD3 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		1B1688E31A7BAFF800CB7477 /* Main.storyboard */ = {
@@ -456,7 +389,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = 334AAQL623;
+				DEVELOPMENT_TEAM = B9Q86FXNP2;
 				INFOPLIST_FILE = squidback/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -464,7 +397,7 @@
 					"$(SRCROOT)/Superpowered",
 					"$(PROJECT_DIR)/Superpowered",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = eu.gianlucaelia.squidback;
+				PRODUCT_BUNDLE_IDENTIFIER = eu.gianlucaelia.squidback3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "squidback/Squidback-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -479,7 +412,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = 334AAQL623;
+				DEVELOPMENT_TEAM = B9Q86FXNP2;
 				INFOPLIST_FILE = squidback/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -487,7 +420,7 @@
 					"$(SRCROOT)/Superpowered",
 					"$(PROJECT_DIR)/Superpowered",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = eu.gianlucaelia.squidback;
+				PRODUCT_BUNDLE_IDENTIFIER = eu.gianlucaelia.squidback3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "squidback/Squidback-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;

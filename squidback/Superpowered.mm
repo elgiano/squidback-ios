@@ -14,6 +14,9 @@
     ReactiveFilter *reactiveFilter;
     
     unsigned int samplerate;
+    float fade;
+    bool fadeIn;
+    bool fadeOut;
 }
 
 
@@ -24,10 +27,11 @@ static bool audioProcessing(void *clientdata, float **buffers, unsigned int inpu
         visualFilterbank->setSamplerate(samplerate);
         self->reactiveFilter->setSamplerate(samplerate);
     };
+    
 
     // Mix the non-interleaved input to interleaved.
     float interleaved[numberOfSamples * 2 + 16];
-
+    
     SuperpoweredInterleave(buffers[0], buffers[1], interleaved, numberOfSamples);
     
     processVisualizer(interleaved, numberOfSamples);
@@ -35,8 +39,31 @@ static bool audioProcessing(void *clientdata, float **buffers, unsigned int inpu
     
     self->reactiveFilter->process(interleaved, interleaved, numberOfSamples);
     
-   
+    // fade
+    if(self->fadeIn || self->fadeOut){
+        float oldFade = self->fade;
+        if(self->fadeIn){
+            self->fade += 0.005;
+            if(self->fade>=1){
+                self->fade = 1;
+                self->fadeIn = false;
+            }
+        }else if(self->fadeOut){
+            self->fade -= 0.001;
+            if(self->fade<=0){
+                self->fade = 0;
+                //self->fadeOut = false;
+                [self->audioIO stop];
+                destroyVisualizer();
+                delete self->reactiveFilter;
+            }
 
+        }
+        
+        SuperpoweredVolume(interleaved,interleaved,oldFade,self->fade,numberOfSamples);
+        
+    }
+    
     SuperpoweredDeInterleave(interleaved, buffers[0], buffers[1], numberOfSamples);
     
     return true;
@@ -46,34 +73,54 @@ static bool audioProcessing(void *clientdata, float **buffers, unsigned int inpu
     self = [super init];
     if (!self) return nil;
     samplerate = 44100;
+    
 
         audioIO = [[SuperpoweredIOSAudioIO alloc] initWithDelegate:(id<SuperpoweredIOSAudioIODelegate>)self preferredBufferSize:12 preferredSamplerate:44100 audioSessionCategory:AVAudioSessionCategoryPlayAndRecord channels:2 audioProcessingCallback:audioProcessing clientdata:(__bridge void *)self];
     
-
     return self;
 }
 
+-(bool) isPlaying{
+    if (audioIO){
+        return audioIO.started;
+    }else{
+        return false;
+    }
+}
 -(void)initAudio{
     initVisualizer(12, samplerate);
     
     reactiveFilter = new ReactiveFilter((unsigned) samplerate);
     reactiveFilter->setFilterBands(12); // TODO: remove
     reactiveFilter->enable(true);
+    
+    fade = 0;
+    fadeIn = true;
+    fadeOut = false;
 
     
     [audioIO start];
 }
 
--(void)stopAudio{
-    [audioIO stop];
-
+- (void) stopAudio{
+    fadeOut = true;
+    fadeIn = false;
+    /*[audioIO stop];
     destroyVisualizer();
-    delete reactiveFilter;
+    delete reactiveFilter;*/
 }
 
 - (void)dealloc {
-    [self stopAudio];
+    //[self stopAudio];
+    [audioIO stop];
+    destroyVisualizer();
+    delete reactiveFilter;
+    
     audioIO = nil;
+}
+
+-(float)getFade{
+    return self->fade;
 }
 
 - (void)interruptionStarted {}
@@ -88,13 +135,18 @@ static bool audioProcessing(void *clientdata, float **buffers, unsigned int inpu
 
 - (void)getSpectrum:(float *)freqs {
     memcpy(freqs,getVisualSpectrum(),numVisualBands*sizeof(float));
+    //memcpy(freqs,reactiveFilter->getAnalMagnitudes(),reactiveFilter->getNumBands()*sizeof(float));
+
 }
 - (int)getNumVisualBands {
     return numVisualBands;
+    //return reactiveFilter->getNumBands();
 }
 - (void)getSpectrumFrequencies:(float *)freqs {
 
     memcpy(freqs,visualBands,numVisualBands*sizeof(float));
+    //memcpy(freqs,reactiveFilter->getBands(),reactiveFilter->getNumBands()*sizeof(float));
+
 }
 
 - (void)getFilterDb:(float *)freqs {
@@ -102,10 +154,11 @@ static bool audioProcessing(void *clientdata, float **buffers, unsigned int inpu
 }
 - (void)getCorrectionDb:(float *)freqs{
     int numBands = reactiveFilter->getNumBands();
-    std::vector<float> correction = reactiveFilter->controller->getPersistentPeakCorrectionNoGain();
+    /*std::vector<float> correction = reactiveFilter->controller->getPersistentPeakCorrectionNoGain();
     for(int i=0;i<numBands && i<correction.size();i++){
         freqs[i] = correction[i];
-    };
+    };*/
+    memcpy(freqs,reactiveFilter->controller->getPersistentPeakCorrectionNoGainPointer(),sizeof(float)*numBands);
 }
 
 - (int)getNumFilterBands {
@@ -124,7 +177,7 @@ static bool audioProcessing(void *clientdata, float **buffers, unsigned int inpu
 }
 -(float) setMaxGain:(float) perc{
     if(reactiveFilter) {
-        reactiveFilter->maxGain = perc*48+2;
+        reactiveFilter->maxGain = perc*98+2;
         reactiveFilter->adjustLopass(-1, true);
         return reactiveFilter->maxGain;
     }else{
@@ -150,7 +203,15 @@ static bool audioProcessing(void *clientdata, float **buffers, unsigned int inpu
 }
 
 -(void) setLopass: (float) perc{
-     if(reactiveFilter) reactiveFilter->adjustLopass( (float) pow(22000/20,(1-perc))*20, true);
+    float freq = (float) pow(22000/5000,(perc))*5000;
+    //std::cout << "hipass: " << freq << std::endl;
+     if(reactiveFilter) reactiveFilter->adjustLopass( freq, true);
+}
+-(void) setHipass: (float) perc{
+    
+    float freq = (float) pow(1000/20,(perc))*20;
+    //std::cout << "hipass: " << freq << std::endl;
+    if(reactiveFilter) reactiveFilter->adjustHipass( freq, true);
 }
 -(void) setMemsetGlitch: (bool) sw{
     if(reactiveFilter) reactiveFilter->memsetGlitch = sw;
@@ -162,7 +223,7 @@ static bool audioProcessing(void *clientdata, float **buffers, unsigned int inpu
     return 0;
 }
 -(float) getPeak{
-    if(reactiveFilter) return reactiveFilter->peak;
+    if(reactiveFilter) return reactiveFilter->peakThreshold;
     return 0;
 }
 -(float) getAverage{

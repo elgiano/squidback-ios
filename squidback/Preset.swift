@@ -9,12 +9,13 @@
 import Foundation
 
 struct Preset{
-    var maxGain:Float=0.5
-    var peakThr:Float=0.8
+    var maxGain:Float=1.0
+    var peakThr:Float=1.0
     var filterPrecision:Int=5
-    var plasticity:Float=0.8
-    var inertia:Float=0.3
-    var lopass:Float=0.1
+    var plasticity:Float=0.1
+    var inertia:Float=0.0
+    var lopass:Float=1.0
+    var hipass:Float=0.0
     var memset=false
 }
 
