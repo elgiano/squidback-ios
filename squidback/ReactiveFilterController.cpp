@@ -59,28 +59,28 @@ void ReactiveFilterController::adjustControls(){
     float avg = average("averageDb",100);
     float avgT = average("averageDb");
     
-    float peak = average("peakDb",100);
-    float peakT = average("peakDb");
+    //float peak = average("peakDb",100);
+    //float peakT = average("peakDb");
     //float peakness = average("peakness",100);
-    float peakThr = target->peakThreshold;
+    //float peakThr = target->peakThreshold;
     float inVolDb = average("inVolDb",100);
     float outVolDb = average("outVolDb",100);
     float outVolDbAvg = average("outVolDb");
-    float filterVariation = average("filterVariation",100);
+    //float filterVariation = average("filterVariation",100);
 
-    float limiterCorrection = average("limiterCorrection",10);
+    //float limiterCorrection = average("limiterCorrection",10);
     //std::map<float,int> peaks = count("peakI");
     std::map<float,int> recentPeaks = count("peakI",500);
-    std::map<float,int> mostRecentPeaks = count("peakI",100);
+    std::map<float,int> mostRecentPeaks = count("peakI",250);
 
     
-    int numPeaks = recentPeaks.size();
-    trackValue("numPeaks", numPeaks);
-    float numPeaksVariation = abs(1-numPeaks/average("numPeaks"));
+    //int numPeaks = recentPeaks.size();
+    //trackValue("numPeaks", numPeaks);
+    //float numPeaksVariation = abs(1-numPeaks/average("numPeaks"));
     
     
     // raise gain to push out to -10
-    float desiredDb = -6;
+    float desiredDb = 0;
     float gainMaximize = ((outVolDb-desiredDb) + (outVolDbAvg-desiredDb)/2) * -0.001;
     // adjust gain to avoid saturation
     //float gainLimiter = (limiterCorrection * 4 - 1) ;
@@ -90,9 +90,9 @@ void ReactiveFilterController::adjustControls(){
     float inGain = (inVolDb-outVolDb) * 0.01;
     if(inGain<0) inGain = 0;
     
-    float peakExcess = peakThr-peak;
-    float dPeak = peak/peakT;
-    if(dPeak==0)dPeak+=0.01;
+    //float peakExcess = peakThr-peak;
+    //float dPeak = peak/peakT;
+    //if(dPeak==0)dPeak+=0.01;
 
     
     target->masterGain += gainMaximize +inGain; // + gainLimiter;// + (peakExcess*0.001);
@@ -110,8 +110,8 @@ void ReactiveFilterController::adjustControls(){
     //__android_log_print(ANDROID_LOG_INFO,"peakThr","%f %f",peakness,target->peakThreshold);
     
     
-    float totalCorrection = -target->getTotalCorrection(true);
-    
+    float totalCorrection = -target->getTotalCorrection(true) / target->getNumBands();
+
     // plasticity: numPeaks
     //target->plasticity = 500*pow(2,abs(std::min(abs(5-numPeaks),abs(15-numPeaks))));
     //std::cout << numPeaks << ": " << target->plasticity << std::endl;
@@ -133,17 +133,16 @@ void ReactiveFilterController::adjustControls(){
     if(target->inertia<=100) target->inertia = 100;
     std::cout << totalCorrection << ": " << target->inertia << ": "<< target->plasticity << std::endl;
     //std::cout << filterVariation << ": " << numPeaksVariation << ": "<< numPeaks << ": " << mapToCurve(abs(7-(numPeaks%15))/8.0,0.01,1,-4) << ": "<< target->plasticity << std::endl;*/
-    std::cout << filterVariation << std::endl;
-    filterVariation = mapToCurve(filterVariation/2, 0, 1, -2);
+    //std::cout << filterVariation << std::endl;
+    //filterVariation = mapToCurve(filterVariation/2, 0, 1, -2);
     
-    totalCorrection /= target->getNumBands();
     
-    target->plasticity = 10000 * (mapToCurve(totalCorrection/20.0, 0.001, 1, 3)) * pow(1.5,numPeaks) * filterVariation;
+    /*target->plasticity = 10000 * (mapToCurve(totalCorrection/20.0, 0.001, 1, 3)) * pow(1.5,numPeaks) * filterVariation;
     if(target->plasticity<=100) target->plasticity = 100;
     
     target->inertia = 100.0 / mapToCurve(totalCorrection/20.0, 0.05, 1, 5) * filterVariation;
-    if(target->inertia<=100) target->inertia = 100;
-    std::cout << filterVariation <<" "<< totalCorrection << ": " << target->inertia << ": "<< target->plasticity  << std::endl;
+    if(target->inertia<=100) target->inertia = 100;*/
+    //std::cout << filterVariation <<" "<< totalCorrection << ": " << target->inertia << ": "<< target->plasticity  << std::endl;
     //std::cout << filterVariation << ": " << numPeaksVariation << ": "<< numPeaks << ": " << mapToCurve(abs(7-(numPeaks%15))/8.0,0.01,1,-4) << ": "<< target->plasticity << std::endl;
     
     
@@ -151,7 +150,7 @@ void ReactiveFilterController::adjustControls(){
                                                  [](const std::pair<float, int>& p1, const std::pair<float, int>& p2) {
                                                      return p1.second < p2.second; });
     
-    peakRegister[target->getBand(most_persistent_peak->first)] += 0.008;
+    peakRegister[target->getBand(most_persistent_peak->first)] += 0.003;
     
     
     /*for(auto& p: peaks){

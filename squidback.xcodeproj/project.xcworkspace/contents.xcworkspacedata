@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:/Users/Shared/gianlucaelia/Low-Latency-Android-iOS-Linux-Windows-tvOS-macOS-Interactive-Audio-Platform-master/Examples_iOS/SuperpoweredFrequencies/squidback.xcodeproj">
+      location = "self:">
    </FileRef>
 </Workspace>

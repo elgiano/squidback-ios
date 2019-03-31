@@ -23,6 +23,7 @@
 		ACC140F32183580E00E71DD3 /* SuperpoweredIOSAudioIO.mm in Sources */ = {isa = PBXBuildFile; fileRef = ACC140ED2183580E00E71DD3 /* SuperpoweredIOSAudioIO.mm */; };
 		ACC140F7218358D000E71DD3 /* libSuperpoweredAudioIOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ACC140F6218358CF00E71DD3 /* libSuperpoweredAudioIOS.a */; };
 		ACF4F5A3217CD68F00AC6F9F /* Preset.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACF4F5A2217CD68F00AC6F9F /* Preset.swift */; };
+		DE8CEC06223ACAB600532930 /* Quicksand-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DE8CEC05223ACAB600532930 /* Quicksand-Regular.ttf */; };
 		DE99938521E54FCD00415F04 /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE99938421E54FCD00415F04 /* GraphView.swift */; };
 		DEECAE5721AEFBB8001CDFD9 /* ReactiveFilterController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEECAE5521AEFBB8001CDFD9 /* ReactiveFilterController.cpp */; };
 /* End PBXBuildFile section */
@@ -69,6 +70,8 @@
 		ACC140F12183580E00E71DD3 /* SuperpoweredSimple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SuperpoweredSimple.h; path = Superpowered/SuperpoweredSimple.h; sourceTree = SOURCE_ROOT; };
 		ACC140F6218358CF00E71DD3 /* libSuperpoweredAudioIOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSuperpoweredAudioIOS.a; path = Superpowered/libSuperpoweredAudioIOS.a; sourceTree = "<group>"; };
 		ACF4F5A2217CD68F00AC6F9F /* Preset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preset.swift; sourceTree = "<group>"; };
+		DE8CEC05223ACAB600532930 /* Quicksand-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Quicksand-Regular.ttf"; sourceTree = "<group>"; };
+		DE8CEC07223BE6CE00532930 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = squidback/Info.plist; sourceTree = "<group>"; };
 		DE99938421E54FCD00415F04 /* GraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
 		DEECAE5521AEFBB8001CDFD9 /* ReactiveFilterController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ReactiveFilterController.cpp; sourceTree = "<group>"; };
 		DEECAE5621AEFBB8001CDFD9 /* ReactiveFilterController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReactiveFilterController.h; sourceTree = "<group>"; };
@@ -93,6 +96,7 @@
 		1B1688D11A7BAFF800CB7477 = {
 			isa = PBXGroup;
 			children = (
+				DE8CEC07223BE6CE00532930 /* Info.plist */,
 				1B98DFFF1B14BD9600617EF9 /* CoreMedia.framework */,
 				1B1689091A7BB18D00CB7477 /* MediaPlayer.framework */,
 				1B1689071A7BB18200CB7477 /* AVFoundation.framework */,
@@ -117,6 +121,7 @@
 				AC97D1B72173BB71008C5D04 /* scales.h */,
 				AC97D1B42173BB1B008C5D04 /* ReactiveFilter.h */,
 				AC97D1B52173BB33008C5D04 /* ReactiveFilter.cpp */,
+				DE8CEC05223ACAB600532930 /* Quicksand-Regular.ttf */,
 				AC97D1B22173BB08008C5D04 /* SpectrumVisualizer.cpp */,
 				1B16890F1A7BC0F000CB7477 /* Superpowered */,
 				1B1688FF1A7BB02A00CB7477 /* Squidback-Bridging-Header.h */,
@@ -201,7 +206,7 @@
 				TargetAttributes = {
 					1B1688D91A7BAFF800CB7477 = {
 						CreatedOnToolsVersion = 6.1.1;
-						DevelopmentTeam = B9Q86FXNP2;
+						DevelopmentTeam = 334AAQL623;
 						LastSwiftMigration = 0900;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -237,6 +242,7 @@
 				ACC0301D21836AAE0099657E /* Images.xcassets in Resources */,
 				1B1688E51A7BAFF800CB7477 /* Main.storyboard in Resources */,
 				1B1688EA1A7BAFF800CB7477 /* LaunchScreen.xib in Resources */,
+				DE8CEC06223ACAB600532930 /* Quicksand-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -389,15 +395,18 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = B9Q86FXNP2;
+				CREATE_INFOPLIST_SECTION_IN_BINARY = NO;
+				DEVELOPMENT_TEAM = 334AAQL623;
+				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
 				INFOPLIST_FILE = squidback/Info.plist;
+				INFOPLIST_PREPROCESS = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)/Superpowered",
 					"$(PROJECT_DIR)/Superpowered",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = eu.gianlucaelia.squidback3;
+				PRODUCT_BUNDLE_IDENTIFIER = eu.gianlucaelia.squidback;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "squidback/Squidback-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -412,15 +421,18 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = B9Q86FXNP2;
+				CREATE_INFOPLIST_SECTION_IN_BINARY = NO;
+				DEVELOPMENT_TEAM = 334AAQL623;
+				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
 				INFOPLIST_FILE = squidback/Info.plist;
+				INFOPLIST_PREPROCESS = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)/Superpowered",
 					"$(PROJECT_DIR)/Superpowered",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = eu.gianlucaelia.squidback3;
+				PRODUCT_BUNDLE_IDENTIFIER = eu.gianlucaelia.squidback;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "squidback/Squidback-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;

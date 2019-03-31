@@ -431,10 +431,10 @@ bool ReactiveFilter::process(float *input, float *output, unsigned int numberOfS
 
     controller->trackValue("outVolDb", ampdb(SuperpoweredPeak(output, numberOfSamples)));
     controller->trackValue("averageDb", average);
-    controller->trackValue("peakDb", this->peak);
-    controller->trackValue("peakness", peakness);
-    controller->trackValue("limiterCorrection", limiterCorrection);
-    controller->trackValue("filterVariation", filterVariation);
+    //controller->trackValue("peakDb", this->peak);
+    //controller->trackValue("peakness", peakness);
+    //controller->trackValue("limiterCorrection", limiterCorrection);
+    //controller->trackValue("filterVariation", filterVariation);
 
     if(internals->analMagnitudes[currentPeakIndex] > peakThreshold)
         controller->trackValue("peakI", currentPeakIndex);
@@ -484,9 +484,9 @@ void ReactiveFilter::updateFilterAvgPeakNoGain() {
     );
 
     // calc average dbs
-    for(unsigned int i=0; i<internals->analNumBands; i++){
+    /*for(unsigned int i=0; i<internals->analNumBands; i++){
         averageDb += internals->analMagnitudes[i];
-    };
+    };*/
     averageDb = ampdb(*peakDb)/2+ampdb(*antipeakDb)/2 ;//ampdb(averageDb/internals->analNumBands);
     
     // calc peakness
@@ -520,7 +520,9 @@ void ReactiveFilter::updateFilterAvgPeakNoGain() {
             //newGain = internals->filter->decibels[i] + (newGain/plasticity);
             newGain = (newGain-internals->filter->decibels[i]);
             
-            newGain /= newGain>=0?inertia:plasticity;
+            //newGain /= /*(newGain>=0?inertia:plasticity)*/(5000/abs(corrections[i]+0.01))/**(newGain>=0?inertia/plasticity:plasticity/inertia)*/;
+            newGain /= (newGain>=0?(pow(2,abs(corrections[i]+0.01))):(100000/pow(2,abs(corrections[i]+0.01))));
+            
             
             newGain += internals->filter->decibels[i];
             

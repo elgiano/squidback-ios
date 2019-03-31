@@ -308,8 +308,9 @@ class ViewController: UIViewController {
         // filter
         //var filterData = [ChartDataEntry]()
         
-        graphView.peakY = Float(superpowered.getPeak()+30)/60.0
-        graphView.avgY = Float(superpowered.getAverage()+30)/60.0
+        // PEAK and AVERAGE lines DATA
+        //graphView.peakY = Float(superpowered.getPeak()+30)/60.0
+        //graphView.avgY = Float(superpowered.getAverage()+30)/60.0
 
         var nFilterBands = Int(superpowered.getNumFilterBands())
         while (nFilterBands != numFilterBands) {
